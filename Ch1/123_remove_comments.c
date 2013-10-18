@@ -22,12 +22,9 @@ int main() {
         state = ML_COMMENT; 
       else if (c=='/' && state != ML_COMMENT)
         state = SL_COMMENT;
-      else
-        printf("/%c", c);
     } else if (c=='\\' && (state==STRING || state==CHAR)) {
       c = getchar();
-      printf("\\%c", c);
-      continue;
+      printf("\\");
     } else if (c=='"' && state==CODE) 
       state = STRING;
     else if (c=='"' && state==STRING)
@@ -36,16 +33,17 @@ int main() {
       state = CHAR;
     else if (c=='\'' && state==CHAR) 
       state = CODE;
+    
+    if (state!=SL_COMMENT && state!=ML_COMMENT)
+      printf("%c", c);
     else if (c=='*' && state==ML_COMMENT) { 
       c = getchar();
       if (c=='/') 
         state=CODE; 
-      continue;
-    } else if (c=='\n' && state==SL_COMMENT) 
+    } else if (c=='\n' && state==SL_COMMENT) {
       state=CODE; 
-
-    // Print character
-    if (state!=SL_COMMENT && state!=ML_COMMENT)
-      printf("%c", c);
+      printf("\n");
+    }
+    // Random comment "alskfjalsk j// a\\"
   }
 }
